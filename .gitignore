@@ -13,4 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
-res/drawable
+app/src/main/res/drawable/pink_flavour_bg.jpg

@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">TP</string>
+    <string name="app_title_login">Login</string>
+    <string name="app_btn_forget_password">Forget password ?</string>
+    <string name="app_btn_register_now">Register now</string>
+    <string name="app_btn_dont_have_account">Don\'t have account ?</string>
+    <string name="app_btn_login">Connection</string>
+    <string name="app_btn_sign_in">SIGN IN</string>
+    <string name="app_btn_send_recovery_link">Send the recovery link</string>
+
+
+    <string name="app_text_welcome_registration">Welcome to the registration page  !</string>
+    <string name="app_text_accept_terms">By registering, i accept the terms of Services and Privacy Policy</string>
+    <string name="app_text_password_recovery">Password recovery</string>
+    <string name="app_text_password_recovery_advice">Next please don\'t forget your password dude !</string>
+
+
+
+    <string name="app_field_pseudo_hint">Pseudo</string>
+    <string name="app_field_email_hint">Email</string>
+    <string name="app_field_password_hint">Password</string>
+    <string name="app_field_password_confirmation_hint">Password Confirmation</string>
+    <string name="app_field_city_code_hint">City Code</string>
+    <string name="app_field_city_hint">City</string>
+    <string name="app_field_phone_number_hint">Phone Number</string>
+
 </resources>
