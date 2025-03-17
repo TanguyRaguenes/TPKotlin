@@ -1,5 +1,6 @@
-package com.example.tp
+package com.example.tp.auth
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,6 +11,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Email
@@ -20,17 +23,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.tp.AppViewHelper
+import com.example.tp.R
 import com.example.tp.ui.theme.DesignButton
 import com.example.tp.ui.theme.DesignPage
 import com.example.tp.ui.theme.DesignTextField
 
-class MainActivity : ComponentActivity() {
+class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -46,7 +52,10 @@ fun LoginPage() {
 
   DesignPage {
 
+      val context = LocalContext.current
+
       Column (
+          modifier = Modifier.verticalScroll(rememberScrollState()),
           horizontalAlignment = Alignment.CenterHorizontally
       ) {
 
@@ -61,17 +70,25 @@ fun LoginPage() {
           )
           DesignTextField(text="Email", icon = Icons.Default.Email)
           DesignTextField(text="Password", icon = Icons.Default.Lock)
-          Row(modifier=Modifier.fillMaxWidth()){
-              DesignButton(text= stringResource(R.string.app_btn_forget_password), modifier = Modifier.weight(1f).padding(horizontal = 10.dp))
-          }
-          Row(modifier=Modifier.fillMaxWidth()){
-              DesignButton(text= stringResource(R.string.app_title_login), modifier = Modifier.weight(1f).padding(horizontal = 10.dp))
-          }
+
+          DesignButton(
+              text= stringResource(R.string.app_btn_forget_password),
+              onClick = {
+                  AppViewHelper.openActivity(context,ForgottenPasswordActivity::class.java )
+              },
+              modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)
+          )
+
+          DesignButton(
+              text= stringResource(R.string.app_title_login),
+              modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)
+          )
 
           Spacer(modifier = Modifier.weight(1f))
 
           Text( text= stringResource(
-              R.string.app_btn_dont_have_account),
+              R.string.app_btn_dont_have_account
+          ),
               textAlign=TextAlign.Center,
               fontStyle = FontStyle.Italic,
               fontSize = 25.sp,
@@ -79,9 +96,14 @@ fun LoginPage() {
               modifier = Modifier.fillMaxWidth()
 
           )
-          Row(modifier=Modifier.fillMaxWidth()){
-              DesignButton(text= stringResource(R.string.app_btn_register_now), modifier = Modifier.weight(1f).padding(horizontal = 10.dp))
-          }
+
+          DesignButton(
+              text= stringResource(R.string.app_btn_register_now),
+              onClick = {
+                  AppViewHelper.openActivity(context,RegistrationActivity::class.java )
+              },
+              modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp))
+
 
   } }
 

@@ -1,10 +1,12 @@
 package com.example.tp.ui.theme
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -31,12 +33,12 @@ import com.example.tp.R
 
 
 @Composable
-fun DesignPage(content: @Composable () -> Unit){
+fun DesignPage(@DrawableRes backgroundId : Int = R.drawable.pink_flavour_bg, content: @Composable () -> Unit){
     TPTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             Box(modifier=Modifier.padding(innerPadding)) {
                 Image(
-                    painter = painterResource(R.drawable.pink_flavour_bg),
+                    painter = painterResource(backgroundId),
                     contentDescription = "",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
@@ -90,14 +92,15 @@ fun DesignTextField(text:String, icon: ImageVector?){
 }
 
 @Composable
-fun DesignButton(text:String,modifier: Modifier = Modifier){
+fun DesignButton(text:String,modifier: Modifier = Modifier, onClick: () -> Unit={}){
     Button(
-        onClick = {},
-        modifier = modifier,
-        border= BorderStroke(width=2.dp, color=Color(100,0,255,100)),
+        onClick = onClick,
+        contentPadding = PaddingValues(0.dp),
+        modifier = modifier.padding(10.dp),
+        border= BorderStroke(width=2.dp, color=Color(50,50,50,50)),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(100,0,255,150),
-            contentColor = Color(255,255,255,255),
+            containerColor = Color(0,0,0,0),
+            //contentColor = Color(0,0,0,0),
             //disabledContainerColor = Color(color = 0xFFFFFFFF),
             //disabledContentColor = Color(color = 0xFFFFFFFF)
         )
@@ -108,9 +111,9 @@ fun DesignButton(text:String,modifier: Modifier = Modifier){
                 brush = Brush.linearGradient(
                     listOf(Color.Gray, Color.DarkGray)
                 )
-            ).fillMaxSize()
+            ).fillMaxWidth().padding(vertical = 16.dp)
         ){
-            Text(text=text)
+            Text(text=text, modifier = Modifier.align(Alignment.Center))
         }
 
 

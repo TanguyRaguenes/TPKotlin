@@ -1,5 +1,6 @@
-package com.example.tp
+package com.example.tp.auth
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,6 +9,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material3.Icon
@@ -16,11 +19,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.tp.R
 import com.example.tp.ui.theme.DesignButton
 import com.example.tp.ui.theme.DesignPage
 import com.example.tp.ui.theme.DesignTextField
@@ -38,10 +43,11 @@ class RegistrationActivity : ComponentActivity() {
 @Composable
 fun RegistrationPage() {
 
+    val context = LocalContext.current
 
-    DesignPage {
+    DesignPage(backgroundId =R.drawable.pink_flavour_bg) {
 
-        Column {
+        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
             Icon(
                 imageVector = Icons.Default.AccountBox,
                 contentDescription = "",
@@ -64,7 +70,16 @@ fun RegistrationPage() {
             DesignTextField(text=stringResource(R.string.app_field_city_code_hint),icon = null)
             DesignTextField(text=stringResource(R.string.app_field_city_hint),icon = null)
             DesignTextField(text=stringResource(R.string.app_field_phone_number_hint),icon = null)
-            DesignButton(text= stringResource(R.string.app_btn_sign_in), modifier = Modifier.fillMaxWidth(  ))
+
+            DesignButton(
+                text= stringResource(R.string.app_btn_sign_in),
+                onClick = {
+                    val intent = Intent(context, LoginActivity::class.java)
+                    context.startActivity(intent)
+                },
+                modifier = Modifier.fillMaxWidth(  )
+            )
+
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text= stringResource(R.string.app_text_accept_terms),
