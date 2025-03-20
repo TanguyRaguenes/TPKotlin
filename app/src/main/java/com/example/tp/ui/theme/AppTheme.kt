@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tp.R
+import com.example.tp.helpers.ProgressDialog
 
 
 @Composable
@@ -49,6 +50,8 @@ fun DesignPage(@DrawableRes backgroundId : Int = R.drawable.pink_flavour_bg, con
                 ) {
 
                     content()
+                    //Intégrer la progressBar dans toutes nos pages
+                    ProgressDialog()
 
                 }
             }
@@ -66,16 +69,18 @@ fun ConditionalIcon(icon: ImageVector?){
 }
 
 @Composable
-fun DesignTextField(text:String, icon: ImageVector?){
-    TextField(value="",
-        onValueChange = {},
+fun DesignTextField(text:String, value:String="", icon: ImageVector?, onValueChange:(String) -> Unit={}){
+    TextField(value=value,
+        onValueChange = onValueChange,
         modifier = Modifier.fillMaxWidth().padding(10.dp),
         leadingIcon = { ConditionalIcon(icon)},
         colors = TextFieldDefaults.colors(
             unfocusedContainerColor = Color(color=0x55000000),
             focusedContainerColor = Color(color=0xDD000000),
             unfocusedIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent
+            focusedIndicatorColor = Color.Transparent,
+            focusedTextColor = Color(255,255,255,255),
+            unfocusedTextColor = Color(0,0,0,255)
         ),
         shape = RoundedCornerShape(10.dp),
         placeholder = {

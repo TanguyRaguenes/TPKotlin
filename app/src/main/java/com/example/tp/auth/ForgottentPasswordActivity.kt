@@ -14,6 +14,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -27,18 +29,20 @@ import com.example.tp.ui.theme.DesignPage
 import com.example.tp.ui.theme.DesignTextField
 
 class ForgottenPasswordActivity : ComponentActivity() {
+    private val viewModel = AuthViewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            ForgottenPasswordPage()
+            ForgottenPasswordPage(viewModel=viewModel)
         }
     }
 }
 
 @Composable
-fun ForgottenPasswordPage() {
+fun ForgottenPasswordPage(viewModel:AuthViewModel) {
 
+    val loginRequestDataState by viewModel.loginRequestData.collectAsState()
 
     DesignPage {
 
@@ -52,8 +56,17 @@ fun ForgottenPasswordPage() {
                 modifier = Modifier.fillMaxWidth(),
             )
             Spacer(modifier=Modifier.size(100.dp))
-            DesignTextField(text= stringResource(R.string.app_field_email_hint),icon =Icons.Default.Email)
-            DesignButton(text= stringResource(R.string.app_btn_send_recovery_link), modifier = Modifier.fillMaxWidth(  ))
+            DesignTextField(
+                text= stringResource(R.string.app_field_email_hint),
+                icon =Icons.Default.Email,
+                value=loginRequestDataState.email,
+                onValueChange = {value->viewModel.loginRequestData.value=viewModel.loginRequestData.value.copy(email = value)}
+            )
+            DesignButton(
+                text= stringResource(R.string.app_btn_send_recovery_link),
+                modifier = Modifier.fillMaxWidth(  ),
+                onClick = {viewModel.resetPassword(onResetPasswordSuccess = {})}
+            )
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text= stringResource(R.string.app_text_password_recovery_advice),
@@ -72,5 +85,6 @@ fun ForgottenPasswordPage() {
 @Preview(showBackground = true)
 @Composable
 fun ForgottenPasswordPagePreview() {
-    ForgottenPasswordPage()
+    val viewModel = AuthViewModel()
+    ForgottenPasswordPage(viewModel=viewModel)
 }

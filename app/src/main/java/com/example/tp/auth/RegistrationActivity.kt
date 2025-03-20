@@ -16,6 +16,8 @@ import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,25 +27,28 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.tp.AppViewHelper
 import com.example.tp.R
 import com.example.tp.ui.theme.DesignButton
 import com.example.tp.ui.theme.DesignPage
 import com.example.tp.ui.theme.DesignTextField
 
 class RegistrationActivity : ComponentActivity() {
+    private val viewModel = AuthViewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            RegistrationPage()
+            RegistrationPage(viewModel=viewModel)
         }
     }
 }
 
 @Composable
-fun RegistrationPage() {
+fun RegistrationPage(viewModel:AuthViewModel) {
 
     val context = LocalContext.current
+    val registrationRequestDataState by viewModel.registrationRequestData.collectAsState()
 
     DesignPage(backgroundId =R.drawable.pink_flavour_bg) {
 
@@ -63,19 +68,55 @@ fun RegistrationPage() {
                 modifier = Modifier.fillMaxWidth(),
 
             )
-            DesignTextField(text= stringResource(R.string.app_field_pseudo_hint),icon = null)
-            DesignTextField(text=stringResource(R.string.app_field_email_hint),icon = null)
-            DesignTextField(text=stringResource(R.string.app_field_password_hint),icon = null)
-            DesignTextField(text=stringResource(R.string.app_field_password_confirmation_hint),icon = null)
-            DesignTextField(text=stringResource(R.string.app_field_city_code_hint),icon = null)
-            DesignTextField(text=stringResource(R.string.app_field_city_hint),icon = null)
-            DesignTextField(text=stringResource(R.string.app_field_phone_number_hint),icon = null)
+            DesignTextField(
+                text= stringResource(R.string.app_field_pseudo_hint),
+                icon = null,
+                value=registrationRequestDataState.pseudo,
+                onValueChange = {value->viewModel.registrationRequestData.value=viewModel.registrationRequestData.value.copy(pseudo = value)}
+            )
+            DesignTextField(
+                text=stringResource(R.string.app_field_email_hint),
+                icon = null,
+                value=registrationRequestDataState.email,
+                onValueChange = {value->viewModel.registrationRequestData.value=viewModel.registrationRequestData.value.copy(email = value)}
+            )
+            DesignTextField(
+                text=stringResource(R.string.app_field_password_hint),
+                icon = null,
+                value=registrationRequestDataState.password,
+                onValueChange = {value->viewModel.registrationRequestData.value=viewModel.registrationRequestData.value.copy(password = value)}
+            )
+            DesignTextField(
+                text=stringResource(R.string.app_field_password_confirmation_hint),
+                icon = null,
+                value=registrationRequestDataState.passwordConfirm,
+                onValueChange = {value->viewModel.registrationRequestData.value=viewModel.registrationRequestData.value.copy(passwordConfirm = value)}
+            )
+            DesignTextField(
+                text=stringResource(R.string.app_field_city_code_hint),
+                icon = null,
+                value=registrationRequestDataState.cityCode?:"",
+                onValueChange = {value->viewModel.registrationRequestData.value=viewModel.registrationRequestData.value.copy(cityCode = value)}
+            )
+            DesignTextField(
+                text=stringResource(R.string.app_field_city_hint),
+                icon = null,
+                value=registrationRequestDataState.city?:"",
+                onValueChange = {value->viewModel.registrationRequestData.value=viewModel.registrationRequestData.value.copy(city = value)}
+            )
+            DesignTextField(
+                text=stringResource(R.string.app_field_phone_number_hint),
+                icon = null,
+                value=registrationRequestDataState.phone?:"",
+                onValueChange = {value->viewModel.registrationRequestData.value=viewModel.registrationRequestData.value.copy(phone = value)}
+            )
 
             DesignButton(
                 text= stringResource(R.string.app_btn_sign_in),
                 onClick = {
-                    val intent = Intent(context, LoginActivity::class.java)
-                    context.startActivity(intent)
+                   viewModel.registration(onRegistrationSuccess = {
+                       AppViewHelper.openActivity(context,LoginActivity::class.java )
+                   })
                 },
                 modifier = Modifier.fillMaxWidth(  )
             )
@@ -98,5 +139,6 @@ fun RegistrationPage() {
 @Preview(showBackground = true)
 @Composable
 fun RegistrationPagePreview() {
-    RegistrationPage()
+    val viewModel = AuthViewModel()
+    RegistrationPage(viewModel=viewModel)
 }

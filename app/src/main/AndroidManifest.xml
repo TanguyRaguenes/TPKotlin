@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -16,7 +17,6 @@
         android:theme="@style/Theme.TP"
         tools:targetApi="31">
 
-        <activity android:name=".auth.LoginActivity"></activity>
         <activity android:name=".auth.ForgottenPasswordActivity"></activity>
         <activity android:name=".auth.RegistrationActivity"></activity>
         <activity android:name=".demoIntent.DemoPage1Activity"></activity>
@@ -24,9 +24,11 @@
         <activity android:name=".demoStateful.DemoStateFul2Activity"></activity>
         <activity android:name=".demoMVVM.DemoViewModelActivity"></activity>
         <activity android:name=".Activity.ArticlesPageActivity"></activity>
+        <activity android:name=".DemoApi.PersonViewModelActivity"></activity>
+        <activity android:name=".articles.ArtActivity"></activity>
 
         <activity
-            android:name=".DemoApi.PersonViewModelActivity"
+            android:name=".auth.LoginActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.TP"

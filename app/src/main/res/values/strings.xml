@@ -24,4 +24,6 @@
     <string name="app_field_city_hint">City</string>
     <string name="app_field_phone_number_hint">Phone Number</string>
 
+    <string name="app_message_loading_data">Loading Data...</string>
+
 </resources>

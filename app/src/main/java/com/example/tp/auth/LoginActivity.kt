@@ -1,12 +1,10 @@
 package com.example.tp.auth
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,6 +18,8 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,25 +32,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tp.AppViewHelper
 import com.example.tp.R
+import com.example.tp.articles.ArtActivity
 import com.example.tp.ui.theme.DesignButton
 import com.example.tp.ui.theme.DesignPage
 import com.example.tp.ui.theme.DesignTextField
 
 class LoginActivity : ComponentActivity() {
+
+    private val viewModel = AuthViewModel();
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-                LoginPage()
+                LoginPage(viewModel=viewModel)
         }
     }
 }
 
 @Composable
-fun LoginPage() {
+fun LoginPage(viewModel: AuthViewModel) {
 
+    val loginRequestDataState by viewModel.loginRequestData.collectAsState()
 
-  DesignPage {
+  DesignPage () {
 
       val context = LocalContext.current
 
@@ -68,8 +73,27 @@ fun LoginPage() {
               fontSize = 36.sp
 
           )
-          DesignTextField(text="Email", icon = Icons.Default.Email)
-          DesignTextField(text="Password", icon = Icons.Default.Lock)
+          DesignTextField(
+              text="Email",
+              icon = Icons.Default.Email,
+              value= loginRequestDataState.email,
+              onValueChange = {value->viewModel.loginRequestData.value=viewModel.loginRequestData.value.copy(email=value)}
+          )
+          DesignTextField(
+              text="Password",
+              icon = Icons.Default.Lock,
+              value=loginRequestDataState.password,
+              onValueChange = {value->viewModel.loginRequestData.value=viewModel.loginRequestData.value.copy(password=value)}
+          )
+
+          DesignButton(
+              text= stringResource(R.string.app_title_login),
+              modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
+              onClick = {viewModel.login(onLoginSuccess = {
+                  AppViewHelper.openActivity(context,ArtActivity::class.java )
+              })}
+
+          )
 
           DesignButton(
               text= stringResource(R.string.app_btn_forget_password),
@@ -79,10 +103,7 @@ fun LoginPage() {
               modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)
           )
 
-          DesignButton(
-              text= stringResource(R.string.app_title_login),
-              modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)
-          )
+
 
           Spacer(modifier = Modifier.weight(1f))
 
@@ -113,5 +134,7 @@ fun LoginPage() {
 @Preview(showBackground = true)
 @Composable
 fun LoginPagePreview() {
-    LoginPage()
+
+    val viewModel = AuthViewModel();
+    LoginPage(viewModel=viewModel)
 }
